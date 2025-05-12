@@ -1,8 +1,8 @@
 import { Container } from "@mantine/core";
-import Dashboard from "@/components/Dashboard";
 import AppLayout from "@/components/layout/AppLayout";
-import { NextPageWithLayout } from "@/types/common";
 import { ReactElement } from "react";
+import { NextPageWithLayout } from "@/types/common";
+import PayoutTable from "@/components/PayoutTable";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 
@@ -18,16 +18,16 @@ export const getServerSideProps = async (
 	return { props: {} };
 };
 
-const DashboardPage: NextPageWithLayout = () => {
+const Payout: NextPageWithLayout = () => {
 	return (
-		<Container size="xl">
-			<Dashboard />
+		<Container size="lg">
+			<PayoutTable />
 		</Container>
 	);
 };
 
-DashboardPage.getLayout = (page: ReactElement) => {
+Payout.getLayout = (page: ReactElement) => {
 	return <AppLayout>{page}</AppLayout>;
 };
 
-export default DashboardPage;
+export default Payout;

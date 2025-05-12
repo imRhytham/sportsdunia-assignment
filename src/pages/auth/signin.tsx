@@ -1,29 +1,29 @@
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Container, Text, Button, Paper, Stack, rem, Box } from "@mantine/core";
+import { getSession, signIn, useSession } from "next-auth/react";
+import { Container, Text, Button, Paper, Stack, Box } from "@mantine/core";
 import { IconBrandGoogle } from "@tabler/icons-react";
+import { GetServerSidePropsContext } from "next";
+
+export const getServerSideProps = async (
+	context: GetServerSidePropsContext
+) => {
+	const session = await getSession(context);
+
+	if (session) {
+		return { redirect: { destination: "/dashboard", permanent: false } };
+	}
+
+	return { props: {} };
+};
 
 export default function SignIn() {
 	const { status } = useSession();
-	const router = useRouter();
-
-	useEffect(() => {
-		if (status === "authenticated") {
-			router.push("/dashboard");
-		}
-	}, [status, router]);
 
 	if (status === "loading") {
 		return (
 			<Container
 				size="xs"
 				h="100vh"
-				style={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-				}}
+				className="flex items-center justify-center"
 			>
 				<Text size="xl">Loading...</Text>
 			</Container>
@@ -31,51 +31,29 @@ export default function SignIn() {
 	}
 
 	return (
-		<Box
-			style={{
-				minHeight: "100vh",
-				background: "linear-gradient(135deg, #1a1b1e 0%, #2c2e33 100%)",
-				display: "flex",
-				alignItems: "center",
-				justifyContent: "center",
-			}}
-		>
+		<Box className="flex items-center justify-center h-screen bg-gradient-to-b from-[#1a1b1e] to-[#2c2e33]">
 			<Container size="xs" px="md">
 				<Paper
 					radius="lg"
 					p="xl"
 					withBorder
-					style={{
-						background: "rgba(255, 255, 255, 0.95)",
-						backdropFilter: "blur(10px)",
-					}}
+					className="bg-white/95 backdrop-blur-lg"
 				>
 					<Stack gap="md" w="100%">
+						<Text size="xl" fw={700} ta="center">
+							Sign in to your account
+						</Text>
 						<Button
-							variant="light"
 							size="lg"
-							leftSection={
-								<IconBrandGoogle style={{ width: rem(20), height: rem(20) }} />
-							}
+							leftSection={<IconBrandGoogle className="w-5 h-5" />}
 							onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
 							fullWidth
 							radius="md"
-							style={{
-								borderWidth: 2,
-								transition: "all 0.2s ease",
-								"&:hover": {
-									transform: "translateY(-2px)",
-									boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-								},
-							}}
+							className="border-2 transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md"
 						>
 							Continue with Google
 						</Button>
 					</Stack>
-
-					<Text c="dimmed" size="sm" ta="center" mt="md">
-						By signing in, you agree to our Terms of Service and Privacy Policy
-					</Text>
 				</Paper>
 			</Container>
 		</Box>
