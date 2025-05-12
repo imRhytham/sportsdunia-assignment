@@ -7,6 +7,7 @@ declare global {
          NEXT_PUBLIC_GOOGLE_CLIENT_SECRET: string;
          NEXT_PUBLIC_NEWS_API_URL: string;
          NEXT_PUBLIC_NEWS_API_KEY: string;
+         SECRET: string;
       }
    }
 }
