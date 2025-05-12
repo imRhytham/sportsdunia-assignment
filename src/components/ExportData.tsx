@@ -88,7 +88,18 @@ const ExportData = ({ data, filename = "export" }: ExportDataProps) => {
 			article.sentiment || "",
 		]);
 
-		(doc as any).autoTable({
+		(
+			doc as jsPDF & {
+				autoTable: (options: {
+					head: string[][];
+					body: string[][];
+					startY: number;
+					theme: string;
+					styles: { fontSize: number };
+					headStyles: { fillColor: number[] };
+				}) => void;
+			}
+		).autoTable({
 			head: headers,
 			body: pdfData,
 			startY: 20,
